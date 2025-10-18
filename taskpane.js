@@ -1,12 +1,51 @@
 let headersCache = null;
+let mailboxBootstrapped = false;
+
+function bootstrapMailboxUi() {
+  if (mailboxBootstrapped) {
+    return;
+  }
+
+  mailboxBootstrapped = true;
+
+  const wireHandlers = () => {
+    const headersButton = document.getElementById("btnHeaders");
+    const copyButton = document.getElementById("btnCopyHeaders");
+
+    if (headersButton) {
+      headersButton.addEventListener("click", getHeaders);
+    }
+
+    if (copyButton) {
+      copyButton.addEventListener("click", copyHeaders);
+    }
+
+    loadEmailInfo().catch(error => reportError("Unable to load message information.", error));
+  };
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    wireHandlers();
+  } else {
+    document.addEventListener("DOMContentLoaded", wireHandlers, { once: true });
+  }
+}
 
 Office.onReady(info => {
   if (info.host === Office.HostType.Outlook) {
-    document.getElementById("btnHeaders").addEventListener("click", getHeaders);
-    document.getElementById("btnCopyHeaders").addEventListener("click", copyHeaders);
-    loadEmailInfo().catch(error => reportError("Unable to load message information.", error));
+    bootstrapMailboxUi();
   }
 });
+
+if (typeof Office !== "undefined") {
+  const previousInitialize = Office.initialize;
+  Office.initialize = function initializeOverride(...args) {
+    bootstrapMailboxUi();
+
+    if (typeof previousInitialize === "function") {
+      previousInitialize.apply(this, args);
+    }
+  };
+}
 
 async function loadEmailInfo() {
   const item = getMailboxItem();
