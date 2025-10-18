@@ -41,7 +41,6 @@
   <Permissions>ReadItem</Permissions>
   <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
-
   <VersionOverrides V1_0="1.0.0.0" xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.0">
     <Requirements>
       <bt:Sets DefaultMinVersion="1.5">
