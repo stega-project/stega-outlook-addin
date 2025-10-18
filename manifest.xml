@@ -11,7 +11,7 @@
   <Description DefaultValue="Secure your emails with STEGA verification."/>
   <IconUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
   <HighResolutionIconUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
-  
+
   <Hosts>
     <Host Name="Mailbox"/>
   </Hosts>
@@ -22,19 +22,47 @@
     </Sets>
   </Requirements>
 
-  <FormSettings>
-    <Form xsi:type="ItemRead">
-      <DesktopSettings>
-        <SourceLocation DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
-        <RequestedHeight>250</RequestedHeight>
-      </DesktopSettings>
-    </Form>
-  </FormSettings>
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+  </DefaultSettings>
+
+  <ExtensionPoint xsi:type="MessageReadCommandSurface">
+    <OfficeTab id="TabDefault">
+      <Group id="msgReadGroup" label="STEGA">
+        <Control xsi:type="Button" id="msgReadButton">
+          <Label resid="residLabel1"/>
+          <Supertip>
+            <Title resid="residLabel1"/>
+            <Description resid="residDesc1"/>
+          </Supertip>
+          <Icon>
+            <bt:Image size="16" resid="icon16"/>
+            <bt:Image size="32" resid="icon32"/>
+          </Icon>
+          <Action xsi:type="ShowTaskpane">
+            <SourceLocation resid="taskpaneUrl"/>
+          </Action>
+        </Control>
+      </Group>
+    </OfficeTab>
+  </ExtensionPoint>
+
+  <Resources>
+    <bt:Images>
+      <bt:Image id="icon16" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
+      <bt:Image id="icon32" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
+    </bt:Images>
+    <bt:Urls>
+      <bt:Url id="taskpaneUrl" DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+    </bt:Urls>
+    <bt:ShortStrings>
+      <bt:String id="residLabel1" DefaultValue="Open STEGA"/>
+    </bt:ShortStrings>
+    <bt:LongStrings>
+      <bt:String id="residDesc1" DefaultValue="Open STEGA verification panel"/>
+    </bt:LongStrings>
+  </Resources>
 
   <Permissions>ReadItem</Permissions>
-  
-  <Rule xsi:type="RuleCollection" Mode="Or">
-    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
-  </Rule>
 
 </OfficeApp>
