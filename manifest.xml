@@ -27,6 +27,8 @@
     <Form xsi:type="ItemRead">
       <DesktopSettings>
         <SourceLocation DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+        <!-- RequestedHeight is required to satisfy the 1.1 schema. -->
+        <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
     </Form>
   </FormSettings>
