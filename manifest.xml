@@ -3,18 +3,15 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:type="MailApp">
 
-  <Id>7a8b1f4e-4f1b-4b9c-8b8d-7a8b1f4e4f1b</Id>
+  <Id>f8c5e4f2-9b9a-4d3d-8b47-123456789abc</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>STEGA</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="STEGA Email Verifier"/>
-  <Description DefaultValue="Verify authenticity of emails sent through STEGA's secure system." />
-
+  <DisplayName DefaultValue="STEGA Add-in"/>
+  <Description DefaultValue="Secure your emails with STEGA verification."/>
   <IconUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
   <HighResolutionIconUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
-
-  <SupportUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/"/>
-
+  
   <Hosts>
     <Host Name="Mailbox"/>
   </Hosts>
@@ -35,64 +32,9 @@
   </FormSettings>
 
   <Permissions>ReadItem</Permissions>
-
+  
   <Rule xsi:type="RuleCollection" Mode="Or">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
   </Rule>
 
-  <DisableEntityHighlighting>false</DisableEntityHighlighting>
-
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" xsi:type="VersionOverridesV1_0">
-    <Requirements>
-      <bt:Sets DefaultMinVersion="1.1">
-        <bt:Set Name="Mailbox"/>
-      </bt:Sets>
-    </Requirements>
-    <Hosts>
-      <Host xsi:type="MailHost">
-        <DesktopFormFactor>
-          <ExtensionPoint xsi:type="MessageReadCommandSurface">
-            <OfficeTab id="TabDefault">
-              <Group id="msgReadGroup">
-                <Label resid="groupLabel"/>
-                <Control xsi:type="Button" id="msgReadButton">
-                  <Label resid="buttonLabel"/>
-                  <Supertip>
-                    <Title resid="buttonLabel"/>
-                    <Description resid="buttonDescription"/>
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="icon16"/>
-                    <bt:Image size="32" resid="icon32"/>
-                    <bt:Image size="80" resid="icon80"/>
-                  </Icon>
-                  <Action xsi:type="ShowTaskpane">
-                    <SourceLocation resid="messageReadTaskPaneUrl"/>
-                  </Action>
-                </Control>
-              </Group>
-            </OfficeTab>
-          </ExtensionPoint>
-        </DesktopFormFactor>
-      </Host>
-    </Hosts>
-
-    <Resources>
-      <bt:Images>
-        <bt:Image id="icon16" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
-        <bt:Image id="icon32" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
-        <bt:Image id="icon80" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
-      </bt:Images>
-      <bt:Urls>
-        <bt:Url id="messageReadTaskPaneUrl" DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
-      </bt:Urls>
-      <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="STEGA"/>
-        <bt:String id="buttonLabel" DefaultValue="Verify with STEGA"/>
-      </bt:ShortStrings>
-      <bt:LongStrings>
-        <bt:String id="buttonDescription" DefaultValue="Check if this email is verified by STEGA."/>
-      </bt:LongStrings>
-    </Resources>
-  </VersionOverrides>
 </OfficeApp>
