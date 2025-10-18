@@ -12,6 +12,11 @@
   <Description DefaultValue="Secure your emails with STEGA verification."/>
   <IconUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
   <HighResolutionIconUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
+  <SupportUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/"/>
+
+  <AppDomains>
+    <AppDomain>https://stega-project.github.io</AppDomain>
+  </AppDomains>
 
   <Hosts>
     <Host Name="Mailbox"/>
@@ -27,9 +32,12 @@
     <Form xsi:type="ItemRead">
       <DesktopSettings>
         <SourceLocation DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+        <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
     </Form>
   </FormSettings>
 
   <Permissions>ReadItem</Permissions>
+  <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
 </OfficeApp>
