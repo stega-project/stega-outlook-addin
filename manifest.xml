@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:type="MailApp">
+
+  <Id>12345678-ABCD-4321-EFGH-987654321000</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>STEGA</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="STEGA Add-in"/>
+  <Description DefaultValue="Vérifie et signe automatiquement les emails envoyés pour garantir leur authenticité."/>
+  <IconUrl DefaultValue="https://raw.githubusercontent.com/stega-project/stega-outlook-addin/main/icon-80.png"/>
+  <HighResolutionIconUrl DefaultValue="https://raw.githubusercontent.com/stega-project/stega-outlook-addin/main/icon-80.png"/>
+
+  <SupportUrl DefaultValue="https://stega.tech"/>
+
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+
+  <Requirements>
+    <Sets DefaultMinVersion="1.1">
+      <Set Name="Mailbox"/>
+    </Sets>
+  </Requirements>
+
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+
+  <Permissions>ReadWriteItem</Permissions>
+
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+  </Rule>
+
+</OfficeApp>
