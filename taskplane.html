@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>STEGA – Mail Check</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <link rel="stylesheet" href="taskpane.css" />
+</head>
+<body>
+  <div class="wrap">
+    <h1>STEGA</h1>
+    <p class="muted">Quick check of the current email.</p>
+
+    <div id="info" class="card">
+      <div><strong>From:</strong> <span id="from">…</span></div>
+      <div><strong>To:</strong> <span id="to">…</span></div>
+      <div><strong>Subject:</strong> <span id="subject">…</span></div>
+      <div><strong>Date:</strong> <span id="date">…</span></div>
+    </div>
+
+    <button id="btnHeaders">Try to read internet headers</button>
+    <pre id="headers" class="pre"></pre>
+  </div>
+
+  <script src="taskpane.js"></script>
+</body>
+</html>
