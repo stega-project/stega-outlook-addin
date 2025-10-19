@@ -69,11 +69,11 @@
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
                     <SourceLocation resid="taskpaneUrl"/>
-                    <SupportsPinning>true</SupportsPinning>
                   </Action>
                 </Control>
               </Group>
             </OfficeTab>
+            <SupportsPinning>true</SupportsPinning>
           </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
