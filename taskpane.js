@@ -1,15 +1,59 @@
 let headersCache = null;
+let mailboxBootstrapped = false;
+
+function bootstrapMailboxUi() {
+  if (mailboxBootstrapped) {
+    return;
+  }
+
+  mailboxBootstrapped = true;
+
+  const wireHandlers = () => {
+    const headersButton = document.getElementById("btnHeaders");
+    const copyButton = document.getElementById("btnCopyHeaders");
+
+    if (headersButton) {
+      headersButton.addEventListener("click", getHeaders);
+    }
+
+    if (copyButton) {
+      copyButton.addEventListener("click", copyHeaders);
+    }
+
+    loadEmailInfo().catch(error => reportError("Unable to load message information.", error));
+  };
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    wireHandlers();
+  } else {
+    document.addEventListener("DOMContentLoaded", wireHandlers, { once: true });
+  }
+}
 
 Office.onReady(info => {
   if (info.host === Office.HostType.Outlook) {
-    document.getElementById("btnHeaders").addEventListener("click", getHeaders);
-    document.getElementById("btnCopyHeaders").addEventListener("click", copyHeaders);
-    loadEmailInfo().catch(error => reportError("Unable to load message information.", error));
+    bootstrapMailboxUi();
   }
 });
 
+if (typeof Office !== "undefined") {
+  const previousInitialize = Office.initialize;
+  Office.initialize = function initializeOverride(...args) {
+    bootstrapMailboxUi();
+
+    if (typeof previousInitialize === "function") {
+      previousInitialize.apply(this, args);
+    }
+  };
+}
+
 async function loadEmailInfo() {
-  const item = Office.context.mailbox.item;
+  const item = getMailboxItem();
+  if (!item) {
+    showNotification("Outlook did not provide a message to inspect.", "error");
+    updateSignatureStatus({ status: "error", message: "No message context is available." });
+    return;
+  }
 
   setText("from", formatSender(item.from));
   setText("to", formatRecipients(item.to));
@@ -28,7 +72,12 @@ async function loadEmailInfo() {
 }
 
 function getHeaders() {
-  const item = Office.context.mailbox.item;
+  const item = getMailboxItem();
+  if (!item) {
+    showNotification("No message is available to read headers from.", "error");
+    updateSignatureStatus({ status: "error", message: "No message context is available." });
+    return;
+  }
   const readButton = document.getElementById("btnHeaders");
 
   readButton.disabled = true;
@@ -194,6 +243,10 @@ function updateSignatureStatus(details) {
 function reportError(message, error) {
   console.error(message, error);
   showNotification(message, "error");
+}
+
+function getMailboxItem() {
+  return Office.context && Office.context.mailbox ? Office.context.mailbox.item : null;
 }
 
 function showNotification(message, type = "info") {

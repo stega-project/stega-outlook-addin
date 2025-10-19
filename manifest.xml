@@ -84,7 +84,7 @@
         <bt:Image id="icon80" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="residFunctionFileUrl" DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+        <bt:Url id="residFunctionFileUrl" DefaultValue="https://stega-project.github.io/stega-outlook-addin/commands.html"/>
         <bt:Url id="taskpaneUrl" DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
