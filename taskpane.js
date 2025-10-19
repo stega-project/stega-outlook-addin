@@ -1,57 +1,60 @@
 let headersCache = null;
+
 let mailboxBootstrapped = false;
-let itemChangedHandlerRegistered = false;
-
-function bootstrapMailboxUi() {
-  if (mailboxBootstrapped) {
-    return;
-  }
-
-  mailboxBootstrapped = true;
-
-  const wireHandlers = () => {
-    const headersButton = document.getElementById("btnHeaders");
-    const copyButton = document.getElementById("btnCopyHeaders");
-
-    if (headersButton) {
-      headersButton.addEventListener("click", getHeaders);
-    }
-
-    if (copyButton) {
-      copyButton.addEventListener("click", copyHeaders);
-    }
-
-    prepareForNewItem();
-    loadEmailInfo().catch(error => reportError("Unable to load message information.", error));
-
-    registerItemChangedHandler();
-  };
-
-  if (document.readyState === "complete" || document.readyState === "interactive") {
-    wireHandlers();
-  } else {
-    document.addEventListener("DOMContentLoaded", wireHandlers, { once: true });
-  }
-}
 
 Office.onReady(info => {
   if (info.host === Office.HostType.Outlook) {
-    bootstrapMailboxUi();
+    // Abonnement pour gérer le cas "pane épinglé" (pinning)
+    Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, onItemChanged);
+    initUI();
   }
 });
 
-if (typeof Office !== "undefined") {
-  const previousInitialize = Office.initialize;
-  Office.initialize = function initializeOverride(...args) {
-    bootstrapMailboxUi();
+function initUI() {
+  if (mailboxBootstrapped) return;
+  mailboxBootstrapped = true;
 
-    if (typeof previousInitialize === "function") {
-      previousInitialize.apply(this, args);
+  const btnHeaders = document.getElementById("btnHeaders");
+  const btnCopy = document.getElementById("btnCopyHeaders");
+  if (btnHeaders) btnHeaders.addEventListener("click", getHeaders);
+  if (btnCopy) btnCopy.addEventListener("click", copyHeaders);
+
+  // Chargement initial des métadonnées
+  loadEmailInfo().catch(err => console.error("loadEmailInfo error:", err));
+}
+
+function onItemChanged() {
+  // Réinitialiser l'affichage quand l'utilisateur change de message et que le pane est épinglé
+  const headersEl = document.getElementById("headers");
+  if (headersEl) headersEl.textContent = "";
+  const fields = ["from","to","subject","date"];
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = "…";
+  });
+  // vider cache interne si tu en as un
+  if (window.headersCache) window.headersCache = null;
+
+  // recharger les infos du message actuel
+  loadEmailInfo().catch(err => console.error("loadEmailInfo after item change error:", err));
+}
+
+if (typeof window !== "undefined" && !Object.getOwnPropertyDescriptor(window, "headersCache")) {
+  Object.defineProperty(window, "headersCache", {
+    get() {
+      return headersCache;
+    },
+    set(value) {
+      headersCache = value;
     }
-  };
+  });
 }
 
 async function loadEmailInfo() {
+  headersCache = null;
+  setCopyEnabled(false);
+  showNotification();
+
   const item = getMailboxItem();
   if (!item) {
     showNotification("Outlook did not provide a message to inspect.", "error");
@@ -72,47 +75,6 @@ async function loadEmailInfo() {
     setText("date", "—");
   }
 
-  updateSignatureStatus(null);
-}
-
-function registerItemChangedHandler() {
-  if (itemChangedHandlerRegistered) {
-    return;
-  }
-
-  if (!Office.context || !Office.context.mailbox || !Office.context.mailbox.addHandlerAsync) {
-    return;
-  }
-
-  Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, handleItemChanged, result => {
-    if (result && result.status === Office.AsyncResultStatus.Succeeded) {
-      itemChangedHandlerRegistered = true;
-    } else if (result) {
-      console.warn("Unable to subscribe to Outlook item change events.", result.error);
-    }
-  });
-}
-
-function handleItemChanged() {
-  prepareForNewItem();
-  loadEmailInfo().catch(error => reportError("Unable to load message information after item change.", error));
-}
-
-function prepareForNewItem() {
-  headersCache = null;
-
-  const headersElement = document.getElementById("headers");
-  if (headersElement) {
-    headersElement.textContent = "";
-  }
-
-  const readButton = document.getElementById("btnHeaders");
-  if (readButton) {
-    readButton.disabled = false;
-  }
-
-  setCopyEnabled(false);
-  showNotification();
   updateSignatureStatus(null);
 }
 
