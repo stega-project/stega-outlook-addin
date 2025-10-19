@@ -15,17 +15,35 @@
   <HighResolutionIconUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon-80.png"/>
 
   <Hosts>
+  <Hosts>
     <Host Name="Mailbox"/>
   </Hosts>
 
   <Requirements>
-    <Sets DefaultMinVersion="1.5">
-      <Set Name="Mailbox"/>
+    <Sets DefaultMinVersion="1.1">
+      <bt:Set Name="Mailbox"/>
     </Sets>
   </Requirements>
 
+  <!-- FormSettings doit venir AVANT Permissions selon le schéma 1.1 -->
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+        <RequestedHeight>450</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+
+  <!-- Puis Permissions -->
   <Permissions>ReadItem</Permissions>
 
+  <!-- Règle d’activation minimale (lecture de messages) -->
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+  </Rule>
+
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
   <VersionOverrides
     xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1"
     xsi:type="VersionOverridesV1_1">
