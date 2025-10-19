@@ -100,7 +100,141 @@ function getHeaders() {
       updateSignatureStatus({ status: "error", message: "Unable to load headers." });
       showNotification("Outlook could not provide the headers. Try again in a moment.", "error");
     }
+
+    const key = line.slice(0, separatorIndex).trim().toLowerCase();
+    const value = line.slice(separatorIndex + 1).trim();
+    map[key] = value;
+    currentKey = key;
   });
+
+  return map;
+}
+
+function copyHeaders() {
+  if (!headersCache) {
+    return;
+  }
+
+  const attemptClipboard = text => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+
+    return new Promise((resolve, reject) => {
+      try {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "absolute";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+  attemptClipboard(headersCache)
+    .then(() => {
+      showNotification("Headers copied to the clipboard.");
+    })
+    .catch(error => {
+      reportError("Unable to copy the headers to the clipboard.", error);
+    });
+}
+
+function updateSignatureStatus(details) {
+  const statusElement = document.getElementById("signatureStatus");
+  const detailsContainer = document.getElementById("signatureDetails");
+  const verdictRow = document.getElementById("signatureVerdictRow");
+
+  if (!details) {
+    statusElement.textContent = "Waiting for headers…";
+    statusElement.className = "status status--pending";
+    detailsContainer.hidden = true;
+    verdictRow.hidden = true;
+    return;
+  }
+
+  statusElement.textContent = details.message;
+  statusElement.className = `status status--${details.status}`;
+
+  if (details.signature || details.timestamp || details.verdict) {
+    detailsContainer.hidden = false;
+    document.getElementById("signatureValue").textContent = details.signature || "—";
+    document.getElementById("signatureTimestamp").textContent = details.timestamp || "—";
+
+    if (details.verdict) {
+      verdictRow.hidden = false;
+      document.getElementById("signatureVerdict").textContent = details.verdict;
+    } else {
+      verdictRow.hidden = true;
+    }
+  } else {
+    detailsContainer.hidden = true;
+    verdictRow.hidden = true;
+  }
+}
+
+function reportError(message, error) {
+  console.error(message, error);
+  showNotification(message, "error");
+}
+
+function showNotification(message, type = "info") {
+  const notification = document.getElementById("notification");
+
+  if (!message) {
+    notification.textContent = "";
+    notification.className = "notification";
+    notification.style.display = "none";
+    return;
+  }
+
+  notification.textContent = message;
+  notification.className = type === "error" ? "notification notification--error" : "notification";
+  notification.style.display = "block";
+}
+
+function setCopyEnabled(value) {
+  document.getElementById("btnCopyHeaders").disabled = !value;
+}
+
+function setText(id, text) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.textContent = text;
+  }
+}
+
+function formatSender(sender) {
+  if (!sender) {
+    return "—";
+  }
+
+  const displayName = sender.displayName && sender.displayName !== sender.emailAddress
+    ? sender.displayName
+    : null;
+
+  if (displayName && sender.emailAddress) {
+    return `${displayName} <${sender.emailAddress}>`;
+  }
+
+  return sender.displayName || sender.emailAddress || "—";
+}
+
+function formatRecipients(recipients) {
+  if (!recipients || !recipients.length) {
+    return "—";
+  }
+
+  return recipients
+    .map(recipient => recipient.displayName || recipient.emailAddress || "Unknown recipient")
+    .join(", ");
 }
 
 function analyzeSignature(rawHeaders) {
