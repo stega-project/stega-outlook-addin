@@ -15,7 +15,6 @@
   <HighResolutionIconUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon-80.png"/>
 
   <Hosts>
-  <Hosts>
     <Host Name="Mailbox"/>
   </Hosts>
 
