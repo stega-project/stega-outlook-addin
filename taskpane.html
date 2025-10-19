@@ -12,15 +12,58 @@
     <h1>STEGA</h1>
     <p class="muted">Quick check of the current email.</p>
 
-    <div id="info" class="card">
-      <div><strong>From:</strong> <span id="from">…</span></div>
-      <div><strong>To:</strong> <span id="to">…</span></div>
-      <div><strong>Subject:</strong> <span id="subject">…</span></div>
-      <div><strong>Date:</strong> <span id="date">…</span></div>
-    </div>
+    <div id="notification" class="notification" role="status" aria-live="polite"></div>
 
-    <button id="btnHeaders">Try to read internet headers</button>
-    <pre id="headers" class="pre"></pre>
+    <section class="card" aria-labelledby="messageInfoHeading">
+      <h2 id="messageInfoHeading">Message information</h2>
+      <dl class="definition-list">
+        <div>
+          <dt>From</dt>
+          <dd id="from">…</dd>
+        </div>
+        <div>
+          <dt>To</dt>
+          <dd id="to">…</dd>
+        </div>
+        <div>
+          <dt>Subject</dt>
+          <dd id="subject">…</dd>
+        </div>
+        <div>
+          <dt>Date</dt>
+          <dd id="date">…</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="card" aria-labelledby="stegaStatusHeading">
+      <h2 id="stegaStatusHeading">STEGA signature</h2>
+      <p id="signatureStatus" class="status status--pending">Waiting for headers…</p>
+      <dl class="definition-list" id="signatureDetails" hidden>
+        <div>
+          <dt>Signature</dt>
+          <dd id="signatureValue">—</dd>
+        </div>
+        <div>
+          <dt>Timestamp</dt>
+          <dd id="signatureTimestamp">—</dd>
+        </div>
+        <div id="signatureVerdictRow" hidden>
+          <dt>Verdict</dt>
+          <dd id="signatureVerdict">—</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="card" aria-labelledby="headersHeading">
+      <h2 id="headersHeading">Internet headers</h2>
+      <p class="muted small">Headers are only retrieved when you ask for them.</p>
+      <div class="button-row">
+        <button id="btnHeaders" type="button">Read headers</button>
+        <button id="btnCopyHeaders" type="button" disabled>Copy headers</button>
+      </div>
+      <pre id="headers" class="pre" aria-live="polite"></pre>
+    </section>
   </div>
 
   <script src="taskpane.js"></script>
