@@ -2,7 +2,7 @@
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
-            xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides"
+            xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
             xsi:type="MailApp">
 
   <Id>fb5ac1f2-99a9-43d4-8b47-123456789abc</Id>
@@ -42,7 +42,7 @@
   <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
 
-  <VersionOverrides V1_0="1.0.0.0" xmlns="http://schemas.microsoft.com/office/mailappversionoverrides">
+  <mailappor:VersionOverrides V1_0="1.0.0.0" xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.0">
     <Requirements>
       <bt:Sets DefaultMinVersion="1.5">
         <bt:Set Name="Mailbox"/>
@@ -96,5 +96,5 @@
         <bt:String id="paneButtonDescription" DefaultValue="Afficher le panneau STEGA pour vérifier et signer les messages."/>
       </bt:LongStrings>
     </Resources>
-  </VersionOverrides>
+  </mailappor:VersionOverrides>
 </OfficeApp>
