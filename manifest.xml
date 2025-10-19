@@ -12,6 +12,11 @@
   <Description DefaultValue="Secure your emails with STEGA verification."/>
   <IconUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
   <HighResolutionIconUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
+  <SupportUrl DefaultValue="https://stega-project.github.io/stega-outlook-addin/"/>
+
+  <AppDomains>
+    <AppDomain>https://stega-project.github.io</AppDomain>
+  </AppDomains>
 
   <Hosts>
     <Host Name="Mailbox"/>
@@ -27,9 +32,68 @@
     <Form xsi:type="ItemRead">
       <DesktopSettings>
         <SourceLocation DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+        <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
     </Form>
   </FormSettings>
 
   <Permissions>ReadItem</Permissions>
+  <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_1" V1_1="1.0.0.0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.5">
+        <bt:Set Name="Mailbox"/>
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+          <SupportsPinning>true</SupportsPinning>
+          <FunctionFile resid="residFunctionFileUrl"/>
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgReadGroup">
+                <Label resid="groupLabel"/>
+                <Control xsi:type="Button" id="msgReadOpenPaneButton">
+                  <Label resid="paneButtonLabel"/>
+                  <Supertip>
+                    <Title resid="paneButtonLabel"/>
+                    <Description resid="paneButtonDescription"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16"/>
+                    <bt:Image size="32" resid="icon32"/>
+                    <bt:Image size="80" resid="icon80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <SourceLocation resid="taskpaneUrl"/>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon16" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
+        <bt:Image id="icon32" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
+        <bt:Image id="icon80" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="residFunctionFileUrl" DefaultValue="https://stega-project.github.io/stega-outlook-addin/commands.html"/>
+        <bt:Url id="taskpaneUrl" DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="groupLabel" DefaultValue="STEGA"/>
+        <bt:String id="paneButtonLabel" DefaultValue="Ouvrir STEGA"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="paneButtonDescription" DefaultValue="Afficher le panneau STEGA pour vérifier et signer les messages."/>
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
 </OfficeApp>
