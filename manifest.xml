@@ -49,7 +49,7 @@
     xmlns:ov="http://schemas.microsoft.com/office/mailappversionoverrides"
     xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:type="VersionOverridesV1_0">
+    xsi:type="ov:VersionOverridesV1_0">
 
     <!-- Requirement set pour commandes -->
     <ov:Requirements>
