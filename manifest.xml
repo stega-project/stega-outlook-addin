@@ -68,7 +68,7 @@
             <ov:OfficeTab id="TabDefault">
               <ov:Group id="msgReadGroup">
                 <ov:Label resid="groupLabel"/>
-                <ov:Control xsi:type="Button" id="msgReadOpenPane">
+                <ov:Control xsi:type="ov:Button" id="msgReadOpenPane">
                   <ov:Label resid="buttonLabel"/>
                   <ov:Supertip>
                     <ov:Title resid="buttonLabel"/>
@@ -79,7 +79,7 @@
                     <bt:Image size="32" resid="icon32"/>
                     <bt:Image size="80" resid="icon80"/>
                   </ov:Icon>
-                  <ov:Action xsi:type="ShowTaskpane">
+                  <ov:Action xsi:type="ov:ShowTaskpane">
                     <ov:TaskpaneId>StegaPane</ov:TaskpaneId>
                     <ov:SourceLocation resid="Taskpane.Url"/>
                     <ov:SupportsPinning>true</ov:SupportsPinning>
