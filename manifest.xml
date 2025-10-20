@@ -64,7 +64,7 @@
           <!-- Requis par le schéma des commandes -->
           <ov:FunctionFile resid="Commands.Url"/>
 
-          <ov:ExtensionPoint xsi:type="MessageReadCommandSurface">
+          <ov:ExtensionPoint xsi:type="ov:MessageReadCommandSurface">
             <ov:OfficeTab id="TabDefault">
               <ov:Group id="msgReadGroup">
                 <ov:Label resid="groupLabel"/>
