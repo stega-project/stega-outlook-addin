@@ -2,7 +2,6 @@
 <OfficeApp
   xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
   xsi:type="MailApp">
 
   <Id>8f8e29d2-2b12-4e94-915a-2b6e6de2b2a1</Id>
@@ -18,14 +17,14 @@
     <Host Name="Mailbox"/>
   </Hosts>
 
-  <!-- Version minimale d'API Office.js requise par l'add-in global -->
+  <!-- Requirement set global (API Office.js minimale) -->
   <Requirements>
     <Sets DefaultMinVersion="1.8">
       <Set Name="Mailbox"/>
     </Sets>
   </Requirements>
 
-  <!-- FormSettings AVANT Permissions (schéma 1.1) -->
+  <!-- FormSettings AVANT Permissions -->
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
@@ -35,64 +34,66 @@
     </Form>
   </FormSettings>
 
-  <!-- Permissions lecture seule de l'item sélectionné -->
+  <!-- Lecture seule de l’item -->
   <Permissions>ReadItem</Permissions>
 
-  <!-- Règle d’activation : lecture d’un message -->
+  <!-- Activation pour lecture de message -->
   <Rule xsi:type="RuleCollection" Mode="Or">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
   </Rule>
 
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
 
-  <!-- Command surface + pinning -->
-  <VersionOverrides
-    xmlns="http://schemas.microsoft.com/office/mailappversionoverrides"
+  <!-- Command surface + pinning, avec préfixes explicites -->
+  <ov:VersionOverrides
+    xmlns:ov="http://schemas.microsoft.com/office/mailappversionoverrides"
+    xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:type="VersionOverridesV1_0">
 
-    <!-- Requirement set pour les commandes + pinning -->
-    <Requirements>
-      <Sets DefaultMinVersion="1.5">
-        <Set Name="Mailbox"/>
-      </Sets>
-    </Requirements>
+    <!-- Requirement set pour commandes -->
+    <ov:Requirements>
+      <bt:Sets DefaultMinVersion="1.5">
+        <bt:Set Name="Mailbox"/>
+      </bt:Sets>
+    </ov:Requirements>
 
-    <Hosts>
-      <Host xsi:type="MailHost">
-        <DesktopFormFactor>
-          <!-- Requis par le schéma des commandes (même si pas d’ExecuteFunction) -->
-          <FunctionFile resid="Commands.Url"/>
+    <ov:Hosts>
+      <ov:Host xsi:type="MailHost">
+        <ov:DesktopFormFactor>
+          <!-- Requis par le schéma des commandes -->
+          <ov:FunctionFile resid="Commands.Url"/>
 
-          <ExtensionPoint xsi:type="MessageReadCommandSurface">
-            <OfficeTab id="TabDefault">
-              <Group id="msgReadGroup">
-                <Label resid="groupLabel"/>
-                <Control xsi:type="Button" id="msgReadOpenPane">
-                  <Label resid="buttonLabel"/>
-                  <Supertip>
-                    <Title resid="buttonLabel"/>
-                    <Description resid="buttonDescription"/>
-                  </Supertip>
-                  <Icon>
+          <ov:ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <ov:OfficeTab id="TabDefault">
+              <ov:Group id="msgReadGroup">
+                <ov:Label resid="groupLabel"/>
+                <ov:Control xsi:type="Button" id="msgReadOpenPane">
+                  <ov:Label resid="buttonLabel"/>
+                  <ov:Supertip>
+                    <ov:Title resid="buttonLabel"/>
+                    <ov:Description resid="buttonDescription"/>
+                  </ov:Supertip>
+                  <ov:Icon>
                     <bt:Image size="16" resid="icon16"/>
                     <bt:Image size="32" resid="icon32"/>
                     <bt:Image size="80" resid="icon80"/>
-                  </Icon>
-                  <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>StegaPane</TaskpaneId>
-                    <SourceLocation resid="Taskpane.Url"/>
-                    <SupportsPinning>true</SupportsPinning>
-                  </Action>
-                </Control>
-              </Group>
-            </OfficeTab>
-          </ExtensionPoint>
+                  </ov:Icon>
+                  <ov:Action xsi:type="ShowTaskpane">
+                    <ov:TaskpaneId>StegaPane</ov:TaskpaneId>
+                    <ov:SourceLocation resid="Taskpane.Url"/>
+                    <ov:SupportsPinning>true</ov:SupportsPinning>
+                  </ov:Action>
+                </ov:Control>
+              </ov:Group>
+            </ov:OfficeTab>
+          </ov:ExtensionPoint>
 
-        </DesktopFormFactor>
-      </Host>
-    </Hosts>
+        </ov:DesktopFormFactor>
+      </ov:Host>
+    </ov:Hosts>
 
-    <Resources>
+    <ov:Resources>
       <bt:Images>
         <bt:Image id="icon16" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon-80.png"/>
         <bt:Image id="icon32" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon-80.png"/>
@@ -109,7 +110,7 @@
       <bt:LongStrings>
         <bt:String id="buttonDescription" DefaultValue="Open the STEGA verification panel for this message."/>
       </bt:LongStrings>
-    </Resources>
+    </ov:Resources>
 
-  </VersionOverrides>
+  </ov:VersionOverrides>
 </OfficeApp>
