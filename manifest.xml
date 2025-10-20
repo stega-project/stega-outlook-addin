@@ -2,7 +2,9 @@
 <OfficeApp
   xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
   xsi:type="MailApp">
+
   <Id>8f8e29d2-2b12-4e94-915a-2b6e6de2b2a1</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>STEGA</ProviderName>
@@ -16,14 +18,14 @@
     <Host Name="Mailbox"/>
   </Hosts>
 
-  <!-- requirement set minimal pour Outlook -->
+  <!-- Version minimale d'API Office.js requise par l'add-in global -->
   <Requirements>
-    <Sets DefaultMinVersion="1.1">
+    <Sets DefaultMinVersion="1.8">
       <Set Name="Mailbox"/>
     </Sets>
   </Requirements>
 
-  <!-- FormSettings AVANT Permissions -->
+  <!-- FormSettings AVANT Permissions (schéma 1.1) -->
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
@@ -33,12 +35,81 @@
     </Form>
   </FormSettings>
 
+  <!-- Permissions lecture seule de l'item sélectionné -->
   <Permissions>ReadItem</Permissions>
 
-  <!-- Règle d’activation (lecture de message) -->
-  <Rule xsi:type="RuleCollection" Mode="Or" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- Règle d’activation : lecture d’un message -->
+  <Rule xsi:type="RuleCollection" Mode="Or">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
   </Rule>
 
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <!-- Command surface + pinning -->
+  <VersionOverrides
+    xmlns="http://schemas.microsoft.com/office/mailappversionoverrides"
+    xsi:type="VersionOverridesV1_0">
+
+    <!-- Requirement set pour les commandes + pinning -->
+    <Requirements>
+      <Sets DefaultMinVersion="1.5">
+        <Set Name="Mailbox"/>
+      </Sets>
+    </Requirements>
+
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+          <!-- Requis par le schéma des commandes (même si pas d’ExecuteFunction) -->
+          <FunctionFile resid="Commands.Url"/>
+
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgReadGroup">
+                <Label resid="groupLabel"/>
+                <Control xsi:type="Button" id="msgReadOpenPane">
+                  <Label resid="buttonLabel"/>
+                  <Supertip>
+                    <Title resid="buttonLabel"/>
+                    <Description resid="buttonDescription"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16"/>
+                    <bt:Image size="32" resid="icon32"/>
+                    <bt:Image size="80" resid="icon80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>StegaPane</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url"/>
+                    <SupportsPinning>true</SupportsPinning>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon16" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon-80.png"/>
+        <bt:Image id="icon32" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon-80.png"/>
+        <bt:Image id="icon80" DefaultValue="https://stega-project.github.io/stega-outlook-addin/icon-80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+        <bt:Url id="Commands.Url" DefaultValue="https://stega-project.github.io/stega-outlook-addin/taskpane.html"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="groupLabel" DefaultValue="STEGA"/>
+        <bt:String id="buttonLabel" DefaultValue="Open STEGA"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="buttonDescription" DefaultValue="Open the STEGA verification panel for this message."/>
+      </bt:LongStrings>
+    </Resources>
+
+  </VersionOverrides>
 </OfficeApp>
