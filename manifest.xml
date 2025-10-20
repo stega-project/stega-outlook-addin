@@ -24,7 +24,7 @@
     </Sets>
   </Requirements>
 
-  <!-- FormSettings doit venir AVANT Permissions selon le schéma 1.1 -->
+  <!-- FormSettings doit venir AVANT Permissions -->
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
@@ -43,19 +43,22 @@
   </Rule>
 
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <!-- IMPORTANT: namespace sans /1.1, type = V1_1 -->
   <VersionOverrides
-    xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1"
+    xmlns="http://schemas.microsoft.com/office/mailappversionoverrides"
     xsi:type="VersionOverridesV1_1">
 
-<Requirements>
-  <Sets DefaultMinVersion="1.1">
-    <Set Name="Mailbox"/>
-  </Sets>
-</Requirements>
+    <Requirements>
+      <Sets DefaultMinVersion="1.5">
+        <Set Name="Mailbox"/>
+      </Sets>
+    </Requirements>
 
     <Hosts>
       <Host xsi:type="MailHost">
         <DesktopFormFactor>
+          <!-- Requis par le schéma des commandes -->
           <FunctionFile resid="Commands.Url"/>
 
           <ExtensionPoint xsi:type="MessageReadCommandSurface">
