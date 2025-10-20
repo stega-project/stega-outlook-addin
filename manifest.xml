@@ -59,7 +59,7 @@
     </ov:Requirements>
 
     <ov:Hosts>
-      <ov:Host xsi:type="MailHost">
+      <ov:Host xsi:type="ov:MailHost">
         <ov:DesktopFormFactor>
           <!-- Requis par le schéma des commandes -->
           <ov:FunctionFile resid="Commands.Url"/>
